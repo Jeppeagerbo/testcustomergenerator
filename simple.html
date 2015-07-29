@@ -1,24 +1,31 @@
 <!DOCTYPE>
 <html>
 <head>
-    <title>Mobile Banking App API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Test Customer generation</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 </html>
 <body>
-  <script type="application/javascript">    
-    function generate_cprtestparameters () {
-      var date; // TODO: Generate date with age over 18
-      // Generate CPR numbers for this date
-      var cprgenerator = new GenerateDKPersonalIds("MALE", new Date("October 13, 2014 11:13:00"));
-      var cpr = (cprgenerator.generate())[0];
-      
-      // Generate random firstname
-      var firstname; 
-      var lastname;
-      
-      var data = { 
-          "updateFormCpr=" : cpr,
+  <table id="result">
+    <tr><th>CPR</th><th>Firstname</th><th>Lastname</th></tr>
+  </table>
+
+  <script type="application/javascript">
+    var firstnames_str =
+      "Tatiana Tatiane Tatianna Tatijana Tatil Tatius Tatjana Tatjanamaija Tatsuya Tatyana Tau Tauai Tauheed Taulant Tauras Taus Tautvydas Tav Tave Tavrin Tavs Tawan Tawfic Tawfig Tawfik Tawfiq Tawheed Tawhid Tawhidullah Tawilian Taya Taybah Tayfun Tayibe Taylan Tayler Taylor Taym Tayma Taymallah Taymiya Tayo Tayrin Tayson Taywin Tayyab Tayyam Tayyip Taz Tazia Tazmeen Tchai Tchila Tea Téa Teah Teba Tebi Tebina Tebise Teck Tecla Ted Teda Teddi Teddy Tedje Tedros Tedross Teebah Teela Teena Teerth Tefa Teffani Teffanie Tegan Teh Tehran Tehreem Tei Teia Teiken Teiko Teil Teinar Teis Teit Teitur Teiz Tej Teja Tejas Tejn Tejpal Tejs Tejst Tejt Tejveer Tekin Tekla Tela Telah Telena Tellef Tello Tellus Telma Telse Tem Temarhan Temira Temitayo Temitope Temme Temmi Temple Temwa Temüdjin Tena Tenaya Tendzin Tene Tengku Tengkuriyadh Tengwen Teniola Tenja Tenkai Tenna Tennae Tenne Tennie Tenya Tenzile Teo Teobal Teobald Teoder Teodor Teodora Teoline Teoman Teona"
+        + " " + "Jab Jabar Jabbar Jabbard Jaber Jabin Jabina Jabinder Jabir Jabriel Jabril Jac Jacek Jacey Jacfar Jach Jachim Jachimma Jachob Jachs Jacim Jacinta Jacintha Jack Jacka Jackeline Jacki Jackie Jackleen Jackline Jacklyn Jacko Jackob Jackqulin Jackson Jacky Jaco Jacob Jacoba Jacobe Jacobh Jacobien Jacobina Jacobine Jacobus Jacop Jacopo Jacoub Jacqielin Jacqline Jacquelin Jacquelina Jacqueline Jacquelyn Jacques Jacquiline Jacqulin Jacquub Jacub Jad Jada Jade Jadeh Jaden Jadranka Jadwiga Jae Jael Jaeliah Jaemes Jaessica Jafar Jafet Jaffar Jafon Jagar Jagdishwari Jagger Jagoda Jaguar Jahan Jahaziel Jahbo Jahin Jahir Jahkeem Jahlina Jahn Jahneil Jahnika Jahnmariuz Jahnnie Jahnnije Jahve Jahvin Jai Jaick Jaida Jaide Jaidee Jaideep Jaiden Jail Jaime Jaimee Jaimy Jaina Jainaba Jair Jairah Jais Jaison Jakarvini Jake Jakel Jaki Jakim Jakki Jakob Jakoba Jakobe Jakobina Jakobine Jakoob Jakop Jakov Jakub Jakup Jákup Jala Jalal Jaleel Jaleesa Jalil Jalila Jalina Jalis Jall Jallal Jalte Jalthe Jam Jama Jamaica Jamaine Jamal Jamale Jamaluddin Jaman Jamanna Jameel Jameela Jamella James Jamez Jami Jamia Jamick Jamie Jamiee Jamiemartin Jamii Jamil Jamila Jamilah Jamile Jamilia Jamilla Jamillah Jamille Jamin Jamina Jaminna Jamir Jammy Jamond Jamshaid Jamshid Jamuna Jamaad Jamaal Jan Jana Janat Janatgul Janay"
+    ;
+    var lastnames_str =
+      "Ahmed Ali Andersen Andersson Andreasen Andreassen Andresen Asmussen Bach Bak Bang Bech Beck Bendtsen Berg Bertelsen Berthelsen Bisgård Bisgaard Bjerre Bjerregård Bjerregaard Bonde Brandt Brodersen Bruun Buch Bundgård Bundgaard Carlsen Carstensen Christensen Christiansen Christoffersen Clausen Dahl Dalgård Dalgaard Dalsgård Dalsgaard Dam Damgård Damgaard Danielsen Davidsen Enevoldsen Eriksen Eskildsen Fischer Frandsen Frederiksen Friis Frost Gade Gregersen Hald Hansen Hassan Hedegård Hedegaard Hemmingsen Henningsen Henriksen Hermansen Hjorth Hoffmann Holm Holst Hougård Hougaard Ibsen Iversen Jacobsen Jakobsen Jensen Jeppesen Jepsen Jespersen Jessen Johannesen Johannsen Johansen Johansson Johnsen Juhl Justesen Juul Jønsson Jørgensen Karlsen"
+    ;
+
+    var firstnames = firstnames_str.split(" ");
+    var lastnames = lastnames_str.split(" ");
+
+    function generate_cprtestparameters (cpr, firstname, lastname) {
+      var data = {
+          "updateFormCpr" : cpr,
           "firstmiddlename" : firstname,
           "lastname": lastname,
           "addressingname": "",
@@ -27,20 +34,38 @@
           "zipCity": "Aarhus",
           "countryCode": "DK",
           "status": "01",
+          "type": "1",
           "currentCpr": "",
           "delaySeconds": 0,
-          "btnCreate": "Create"
-    };
-    
+          "btnCreate": "Create",
+          "callback": "test"
+      };
+      return data;
+    }
+
     $(function() {
-      var cprsimurlbase = "https://idk0danadmdf.intranet.pbs/simulator/cpr";
+      var date; // TODO: Generate date with age over 18
       var cprgenerator = new GenerateDKPersonalIds("MALE", new Date("October 13, 2014 11:13:00"));
-      var cpr = cprgenerator.generate();
-      debugger;
-      $.get("")
+      var cprs = cprgenerator.generate().filter(function(obj) {
+        return parseInt(obj.substring(7,8)) < 5;
+      }).map(function(obj){
+        return obj.substring(0,6) + obj.substring(7,11);
+      });
+
+      for(i=0; i < cprs.length; i++) {
+        var firstname = firstnames[Math.floor((Math.random() * firstnames.length))];
+        var lastname = lastnames[Math.floor((Math.random() * lastnames.length))];
+
+        var result = $("#result");
+        result.append("<tr>" + "<td>" + cprs[i] + "</td>" + "<td>" + firstname + "</td>" + "<td>" + lastname + "</td>" + "<tr>");
+        var cprsimurlbase = "https://idk0danadmdf.intranet.pbs/simulator/cpr";
+        var params = $.param(generate_cprtestparameters(cprs[i], firstname, lastname));
+        //$.getJSON(cprsimurlbase + "?" + params).done(function(html) {});
+      }
+
     });
   </script>
-  
+
   <script type="application/javascript">
     function calculateModules11(id, to) {
         var multiply = [4, 3, 2, 7, 6, 5, 4, 3, 2, 1];
@@ -61,7 +86,7 @@
     function GenerateDKPersonalIds(gender, birthdate) {
         this.gender = gender;
         this.birthdate = birthdate;
-        
+
         this.generate = function() {
                 var fixpart = "";
                 var day = birthdate.getDate();
@@ -77,8 +102,8 @@
                 var fullYear = birthdate.getFullYear().toString();
                 var strYear = fullYear;
                 fixpart += strYear.substring(2, 4);
-                fixpart += "-"; 
-                
+                fixpart += "-";
+
                 var result = [];
                 var valid8Digits = this.getValid8Digits(fullYear);
                 var counter = 0;
@@ -113,7 +138,7 @@
                 }
                 return result;
         };
-        
+
         this.getValid8Digits = function(fullYear) {
                 var century = Math.floor(fullYear / 100);
                 var year = fullYear % 100;
@@ -157,6 +182,6 @@
         };
 }
   </script>
-  
+
 </body>
 </html>
